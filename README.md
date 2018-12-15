@@ -1,4 +1,4 @@
-## 这是一个基于[vue-element-admin](https://github.com/PanJiaChen/vue-element-admin)的一个demo
+## 这是一个基于[vue-element-admin](https://github.com/PanJiaChen/vue-element-admin)的demo
 
 ### 主要的技术栈为: vue + vue-router + vuex + element-ui + axios;
 
@@ -27,8 +27,11 @@
 
 ## 项目运行图
 
+1. 登录页
 ![登录页](1.jpg)
 
+2. 用户列表页
 ![列表页](2.jpg)
 
+3. 用户增加
 ![用户增加](3.jpg)
