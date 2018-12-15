@@ -87,7 +87,7 @@ export default {
       listLoading: true,
       pagesize: 10,
       total: 0,
-      totalPages: 1,
+      totalPages: 0,
       page: 1,
 
       show: false,
@@ -95,7 +95,7 @@ export default {
       obj: null,
     }
   },
-  mounted() {
+  created() {
     let { page, pagesize } = this.$route.query;
     this.page = +page || 1;
     this.pagesize = +pagesize || 10;
@@ -109,12 +109,15 @@ export default {
         this.listLoading = false;
         this.total = data.count;
         this.totalPages = data.totalPages;
+        this.page = data.currentPage;
       });
     },
     changePage(page, pagesize) {
+      var _page = this.page,
+          _pagesize = this.pagesize;
       this.page = page;
       this.pagesize = pagesize;
-      this.fetchData();
+      if (page !== _page && pagesize || _pagesize !== pagesize) this.fetchData();
     },
     del(id) {
       this.$confirm('此操作将删除该用户, 是否继续?', '提示', {

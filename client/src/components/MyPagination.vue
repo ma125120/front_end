@@ -19,23 +19,23 @@ export default {
   props: {
     total: {
       type: Number,
-      default: 0
+      default: 0,
     },
     page: {
       type: Number,
-      default: 1
+      default: 1,
     },
     pagesize: {
       type: Number,
-      default: 10
+      default: 10,
     },
     totalPages: {
       type: Number,
-      default: 1
+      default: 1,
     },
     max: {
       type: Number,
-      default: 20
+      default: 20,
     },
   },
   watch: {
@@ -44,6 +44,11 @@ export default {
       if (!this.getCurrentPage()) {
         this.$emit('change', +page || 1, +pagesize || 10);
       }
+    },
+    totalPages(newVal, oldVal) {
+      if (+oldVal === 0 && newVal > 0) {
+        this.handlePage('replace', this.page, +this.pagesize);
+      }
     }
   },
   created() {
@@ -51,28 +56,29 @@ export default {
   },
   methods: {
     changePage(val) {
-      this.$router.push({
-        path: this.$route.path,
-        query: { ...this.$route.query, page: val, pagesize: this.pagesize },
-      });
+      this.handlePage('push', val, this.pagesize);
     },
     getCurrentPage() {
       var { page, pagesize } = this.$route.query,
-          MAX_PAGESIZE = this.max;
-      if (!page && !pagesize || (this.totalPages > 0 && (page > this.totalPages))) {
-        this.$router.replace({
-          path: this.$route.path,
-          query: { ...this.$route.query, page: 1, pagesize: this.pagesize },
-        });
+          MAX_PAGESIZE = this.max,
+          totalPages = this.totalPages;
+      if (!page || !pagesize) {
+        this.handlePage('replace', page || 1, +pagesize || this.pagesize);
         return true;
       } else if (pagesize > MAX_PAGESIZE) {
-        this.$router.replace({
-          path: this.$route.path,
-          query: { ...this.$route.query, page: page || 1, pagesize: MAX_PAGESIZE },
-        });
+        this.handlePage('replace', page, MAX_PAGESIZE);
+        return true;
+      } else if (totalPages > 0 && (page > totalPages)) {
+        this.handlePage('replace', totalPages, +pagesize);
         return true;
       }
       return false;
+    },
+    handlePage(type, page, pagesize) {
+      this.$router[type]({
+        path: this.$route.path,
+        query: { ...this.$route.query, page, pagesize },
+      });
     }
   },
 }
