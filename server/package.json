@@ -11,7 +11,7 @@
   },
   "dependencies": {
     "@koa/cors": "^2.2.2",
-    "axios": "^0.18.0",
+    "axios": "^0.21.1",
     "fluent-ffmpeg": "^2.1.2",
     "form-data": "^2.3.2",
     "fs-extra": "^7.0.0",
